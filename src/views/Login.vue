@@ -1,7 +1,7 @@
 <template>
     <div class="login">
     <div class="container">
-      <img src="../assets/avatar.jpg" alt="" class="avatar">
+      <img src="../assets/00.jpg" alt="" class="avatar">
 
        <el-form :model="fromLogin" :rules="rules" ref="from"  class="demo-ruleForm">
        <el-form-item  prop="username">
@@ -9,7 +9,7 @@
        </el-form-item>
 
        <el-form-item  prop="password">
-       <el-input v-model="fromLogin.password" placeholder="密码"></el-input>
+       <el-input v-model="fromLogin.password" placeholder="密码" type="password"></el-input>
        </el-form-item>
 
       <el-form-item>
@@ -22,7 +22,7 @@
 </template>
 <script>
 // 引入login校验 使用解构
-import { login } from '@/api/index.js'
+import { login, getUserList } from '@/api/index.js'
 export default {
   data () {
     return {
@@ -49,12 +49,21 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // validate()参数为函数，如果验证通过返回true
+          // 调用它返回的是一个promise对象。这个对象有成功则返回then(fn),fn为返回成功的函数
           login(this.fromLogin).then((res) => {
-            console.log(res)
+            // console.log(res)
             if (res.meta.status === 200) {
               this.$message({
                 message: res.meta.msg,
                 type: 'success'
+              })
+              // 1 登录成功设置token和跳转到首页
+              localStorage.setItem('mytoken', res.data.token)
+              // 2 跳转页面
+              this.$router.push({name: 'home'})
+              // 发送请求 get 请求是对象的模式传值{params:{id:1}}
+              getUserList({query: '', pagenum: 1, pagesize: 10}).then((res) => {
+                console.log(res)
               })
             } else {
               this.$message({
