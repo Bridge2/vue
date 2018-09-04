@@ -14,7 +14,7 @@
 
       <el-form-item>
                             <!-- 按下提交的时候获取表单 -->
-    <el-button type="primary" @click="submitForm('from')" class="login-btn">立即创建</el-button>
+    <el-button type="primary" @click="submitForm('from')" class="login-btn">登录</el-button>
      </el-form-item>
 </el-form>
     </div>
@@ -22,7 +22,7 @@
 </template>
 <script>
 // 引入login校验 使用解构
-import { login, getUserList } from '@/api/index.js'
+import { login } from '@/api/index.js'
 export default {
   data () {
     return {
@@ -62,9 +62,9 @@ export default {
               // 2 跳转页面
               this.$router.push({name: 'home'})
               // 发送请求 get 请求是对象的模式传值{params:{id:1}}
-              getUserList({query: '', pagenum: 1, pagesize: 10}).then((res) => {
-                console.log(res)
-              })
+              // getUserList({query: '', pagenum: 1, pagesize: 10}).then((res) => {
+              //   console.log(res)
+              // })
             } else {
               this.$message({
                 message: res.meta.msg,

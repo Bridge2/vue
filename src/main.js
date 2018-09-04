@@ -29,7 +29,7 @@ router.beforeEach((to, from, next) => {
     next()
   } else {
     // 如果不是就重定向，不是使用this.$router.push() 会报错，因为此时的vm实例还没创建
-    // 可以使用next来重定向 不是访问login
+    // 可以使用next来重定向 不是访问loginnp
     next({name: 'login'})
   }
 })
