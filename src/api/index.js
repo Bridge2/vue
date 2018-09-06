@@ -48,9 +48,27 @@ export const editUserinfo = (pa) => {
     return res.data
   })
 }
-// 删除用户
+// 5 删除用户
 export const deleteUserByid = (id) => {
   return axios.delete(`users/${id}`).then((res) => {
+    return res.data
+  })
+}
+// 6 修改用户状态 users/:uId/state/:type 传送两个参数 id 和 修改的状态
+export const editState = (pa) => {
+  return axios.put(`users/${pa.uid}/state/${pa.type}`).then((res) => {
+    return res.data
+  })
+}
+// 7 获取所有角色列表不需要参数
+export const getRole = () => {
+  return axios.get('roles').then((res) => {
+    return res.data
+  })
+}
+// 8 分配用户角色 users/:id/role
+export const grantRoleById = (pa) => {
+  return axios.put(`users/${pa.id}/role`, {rid: pa.rid}).then((res) => {
     return res.data
   })
 }

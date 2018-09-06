@@ -46,7 +46,7 @@
             v-model="scope.row.mg_state"
             active-color="#13ce66"
             inactive-color="#ff4949"
-             @click="handleEdit(scope.$index, scope.row)">
+             @change="Editstate(scope.row)">
          </el-switch>
       </template>
     </el-table-column>
@@ -64,7 +64,7 @@
                </el-button>
           </el-tooltip>
            <el-tooltip content="授权角色" placement="bottom" >
-               <el-button type="info" plain @click="handleEdit( scope.row)">
+               <el-button type="info" plain @click="granteEdit( scope.row)">
                    <i class="el-icon-check"></i>
                </el-button>
           </el-tooltip>
@@ -127,23 +127,55 @@
     <el-button type="primary" @click="editUserSubmit('editform')">确 定</el-button>
   </div>
 </el-dialog>
+<!-- 角色授权 -->
+<el-dialog title="添加用户" :visible.sync="grantUser">
+  <!-- label-width 设置表格的宽度  :model="addform" addfrom 是一个对象-->
+  <el-form :model="grantform" label-width="100px" ref='grantform'>
+    <el-form-item label="用户名:">
+      <el-input v-model="grantform.username" auto-complete="off" disabled="" style="width:80px"></el-input>
+   </el-form-item>
+     <!-- 下拉选择框 -->
+    <el-form-item label="角色" >
+      <!-- 当选择框改变了获取到所选择的的id，此时rolevalue就是我们需要的角色id -->
+   <el-select v-model="rolevalue" placeholder="请选择" @change='roleChange'>
+     <!-- :label就是要显示的数据  -->
+     <!--v-model:这可以自动的获取:value所绑定的数据，意味着rolevalue就是item.id -->
+    <el-option
+      v-for="item in grantList"
+      :key="item.value"
+      :label="item.roleName"
+      :value="item.id">
+    </el-option>
+  </el-select>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="grantUser = false">取 消</el-button>
+    <el-button type="primary" @click="grantUserSubmit('grantform')">确 定</el-button>
+  </div>
+</el-dialog>
     </div>
 
 </template>
 
 <script>
 // 获取登录用户的详细信息
-import { getUserList, getAddUser, editUserinfo, deleteUserByid } from '@/api/index.js'
+import { getUserList, getAddUser, editUserinfo, deleteUserByid, editState, getRole, grantRoleById } from '@/api/index.js'
 export default {
   data () {
     return {
+      /* 这是角色的id */
+      rolevalue: '',
+      grantList: [],
       getAddUser: false,
       editUser: false,
+      grantUser: false,
       total: 0,
       pagenum: 1,
       pagesize: 10,
       seachValue: '',
       tableData: [],
+
       // 添加用户的信息
       addform: {
         username: '',
@@ -156,6 +188,11 @@ export default {
         email: '',
         mobile: '',
         id: ''
+      },
+      grantform: {
+        username: '',
+        id: '',
+        rid: ''
       },
       rules: {
         username: [
@@ -176,6 +213,66 @@ export default {
     }
   },
   methods: {
+    // 6.1 当下拉框改变的时候，获取角色id
+    roleChange () {
+      // 赋值给角色rid   rolevalue是通过动态绑定的，通过item.id获取到
+      this.grantform.rid = this.rolevalue
+    },
+    // 6.2 获取到 id 和rid 后发送请求分配用户角色
+    grantUserSubmit () {
+      grantRoleById(this.grantform).then((res) => {
+        // console.log(res) 设置成功
+        if (res.meta.status === 200) {
+          this.$message({
+            type: 'success',
+            message: res.meta.msg
+          })
+        } else {
+          this.$message({
+            type: 'success',
+            message: res.meta.msg
+          })
+        }
+        // 设置成功关闭对话提示框
+        this.grantUser = false
+      })
+    },
+    // 6 角色授权管理
+    granteEdit (row) {
+      // 获取id 用户名 rid
+      // 弹出提示框
+      this.grantUser = true
+      // 填充默认数据
+      this.grantform.username = row.username
+      this.grantform.id = row.id
+      // 加载默认数据 发送请求加载
+      getRole().then((res) => {
+        console.log(res)
+        // 赋值给下拉框
+        this.grantList = res.data
+      })
+    },
+    // 5 编辑状态信息 应该用change事件
+    Editstate (row) {
+      // row 存放了当前行的信息包括id 和状态
+      // console.log(row)
+      // 发送请求
+      editState({uid: row.id, type: row.mg_state}).then((res) => {
+        // 修改成功。弹框提示
+        console.log(res)
+        if (res.meta.status === 200) {
+          this.$message({
+            tyep: 'success',
+            message: res.meta.msg
+          })
+        } else {
+          this.$message({
+            tyep: 'error',
+            message: res.meta.msg
+          })
+        }
+      })
+    },
     // 4 删除用户信息
     deleteUser (id) {
       // 点击删除应该弹出提示框给用户确认
@@ -275,7 +372,7 @@ export default {
         this.total = res.data.total
       })
     },
-    handleEdit () {},
+
     // 获取用户数据 要求传送query , 页数，
     handleSizeChange (val) {
       console.log(`每页 ${val} 条`)
