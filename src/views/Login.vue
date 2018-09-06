@@ -45,7 +45,6 @@ export default {
   },
   methods: {
     submitForm (formName) {
-      console.log(this.$refs[formName].validate())
       this.$refs[formName].validate((valid) => {
         if (valid) {
           // validate()参数为函数，如果验证通过返回true

@@ -28,9 +28,29 @@ export const login = (params) => {
     return res.data
   })
 }
-
+// 2 获取用户信息列表
 export const getUserList = (pa) => {
   return axios.get('users', {params: pa}).then((res) => {
+    return res.data
+  })
+}
+
+// 3 添加新用户
+export const getAddUser = (pa) => {
+  return axios.post('users', pa).then((res) => {
+    return res.data
+  })
+}
+// 4 编辑用户
+export const editUserinfo = (pa) => {
+  // put 为修改提交 要求url传参，传送id
+  return axios.put(`users/${pa.id}`, pa).then((res) => {
+    return res.data
+  })
+}
+// 删除用户
+export const deleteUserByid = (id) => {
+  return axios.delete(`users/${id}`).then((res) => {
     return res.data
   })
 }
