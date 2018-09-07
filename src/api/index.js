@@ -78,3 +78,16 @@ export const getAllRights = (pa) => {
     return res.data
   })
 }
+// 10 删除角色的指定权限 roles/:roleId/rights/:rightId
+export const deleteRight = (roleid, rightid) => {
+  return axios.delete(`roles/${roleid}/rights/${rightid}`).then((res) => {
+    return res.data
+  })
+}
+// 11 角色授权 请求路径：roles/:roleId/rights :roleId角色ID不能为空携带在url中
+// rids权限ID列表以 , 分割的权限ID列表需要传送字符串(我们选中的授权角色的id)
+export const grantUserRole = (pa) => {
+  return axios.post(`roles/${pa.roleid}/rights`, {rids: pa.rids}).then((res) => {
+    return res.data
+  })
+}

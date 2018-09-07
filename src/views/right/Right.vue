@@ -27,7 +27,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="currentPage4"
+      :current-page=1
       :page-sizes="[10, 20, 30, 40]"
       :page-size="10"
       layout="total, sizes, prev, pager, next, jumper"
@@ -53,10 +53,7 @@ export default {
   // 1 页面一加载就渲染页面
   mounted () {
     // 发送请求 type类型值: list 或 tree , list 列表显示权限, tree 树状显示权限,参数是url参数:type
-    getAllRights({type: 'list'}).then((res) => {
-      console.log(res)
-      this.rightDataList = res.data
-    })
+    this.initRight()
   },
   // 过滤器
   filters: {
@@ -72,6 +69,22 @@ export default {
       } else {
         return ''
       }
+    }
+  },
+  // 分液器
+  methods: {
+    handleSizeChange (val) {
+      console.log(`每页 ${val} 条`)
+    },
+    handleCurrentChange (val) {
+      console.log(`当前页: ${val}`)
+    },
+    initRight () {
+      getAllRights({type: 'list'}).then((res) => {
+        console.log(res)
+        this.rightDataList = res.data
+        this.total = res.data.length
+      })
     }
   }
 }
