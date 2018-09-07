@@ -72,3 +72,9 @@ export const grantRoleById = (pa) => {
     return res.data
   })
 }
+// 9 获取所有权限列表  rights/:type
+export const getAllRights = (pa) => {
+  return axios.get(`rights/${pa.type}`).then((res) => {
+    return res.data
+  })
+}
