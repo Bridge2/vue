@@ -7,6 +7,9 @@ import User from '@/views/user/User.vue'
 import Welconme from '@/views/Welcome.vue'
 import Right from '@/views/right/Right.vue'
 import Role from '@/views/right/Role.vue'
+import Categories from '@/views/goods/Categories.vue'
+import Goods from '@/views/goods/Goods.vue'
+import Params from '@/views/goods/Params.vue'
 // 引入静态资源文件
 // import styles  from '@/'
 Vue.use(Router)
@@ -26,8 +29,8 @@ export default new Router({
       children: [
         // 登录显示的页面
         {
-          path: 'user',
-          name: 'user',
+          path: 'users',
+          name: 'users',
           component: User
         },
         {
@@ -37,15 +40,31 @@ export default new Router({
         },
         // 权限列表
         {
-          path: 'role',
-          name: 'role',
+          path: 'roles',
+          name: 'roles',
           component: Role
         },
         // 角色列表
         {
-          path: 'right',
-          name: 'right',
+          path: 'rights',
+          name: 'rights',
           component: Right
+        },
+        // 商品列表的三个路由
+        {
+          path: 'goods',
+          name: 'goods',
+          component: Goods
+        },
+        {
+          path: 'categories',
+          name: 'categories',
+          component: Categories
+        },
+        {
+          path: 'params',
+          name: 'params',
+          component: Params
         }
       ]
     }

@@ -4,30 +4,19 @@
             <el-aside width="auto" >
                 <div class="logo"></div>
                 <el-menu default-active="1-1" class="el-menu-admin" @open="handleOpen" @close="handleClose" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b" :unique-opened="true" :collapse='isCollapse' :router='true'>
-                    <el-submenu index="1">
+                  <!-- 展开索引也应该动态绑定 -->
+                    <el-submenu :index="item.id +''" v-for="(item) in menusList" :key="item.id">
                         <template slot="title">
                             <i class="el-icon-location"></i>
-                            <span>用户管理</span>
+                            <span>{{item.authName}}</span>
                         </template>
-                        <el-menu-item index="user">
+                        <!-- 跳转的路径在part里面 路由的路径要根据这里的路径修改-->
+                        <el-menu-item :index="subitem.path" v-for="(subitem) in item.children" :key="subitem.id">
                             <i class="el-icon-menu"></i>
-                            <span>用户列表</span>
+                            <span>{{subitem.authName}}</span>
                         </el-menu-item>
                     </el-submenu>
-                    <el-submenu index="2">
-                        <template slot="title">
-                            <i class="el-icon-location"></i>
-                            <span>权限管理</span>
-                        </template>
-                        <el-menu-item index="role">
-                            <i class="el-icon-menu"></i>
-                            <span>角色列表</span>
-                        </el-menu-item>
-                        <el-menu-item index="right">
-                            <i class="el-icon-menu"></i>
-                            <span>权限列表</span>
-                        </el-menu-item>
-                    </el-submenu>
+
                 </el-menu>
             </el-aside>
             <el-container>
@@ -35,7 +24,8 @@
                     <span class=" myicon myicon-menu toggle-btn" @click='isCollapse=!isCollapse'></span>
                     <div class="system-title">电子商务管理后台 </div>
                     <div>
-                        <span class="welcome">您好:admin</span>
+                      <!-- 先判断$store.username是否有数据，没有则取永久存取的数据 -->
+                        <span class="welcome">您好:{{$store.state.username?$store.state.username:$store.getters.getUserName}}</span>
                         <el-button type="text" @click="outLogin">退出</el-button>
                     </div>
                 </el-header>
@@ -49,16 +39,20 @@
     </div>
 </template>
 <script>
+import { getAllmenus } from '@/api/index.js'
 export default {
   data () {
     return {
-      isCollapse: false
+      isCollapse: false,
+      menusList: []
     }
   },
-  // mounted () {
-  // // 一上来就渲染用户页面
-
-  // },
+  mounted () {
+  // 一上来就渲染用户页面
+    getAllmenus().then((res) => {
+      this.menusList = res.data
+    })
+  },
   methods: {
     handleOpen (key, keyPath) {
       console.log(key, keyPath)

@@ -91,3 +91,25 @@ export const grantUserRole = (pa) => {
     return res.data
   })
 }
+// 12 实现添加用户
+export const getAllRole = (params) => {
+  // 返回axios请求和结果
+  return axios.post('roles', params).then((res) => {
+    return res.data
+  })
+}
+// 13 渲染左侧导航栏 menus
+export const getAllmenus = () => {
+  // 返回axios请求和结果
+  return axios.get('menus').then((res) => {
+    return res.data
+  })
+}
+// 14 商品列表数据categories
+
+export const getAllcategories = (type) => {
+  // 返回axios请求和结果
+  return axios.get('categories', {params: {'type': type}}).then((res) => {
+    return res.data
+  })
+}

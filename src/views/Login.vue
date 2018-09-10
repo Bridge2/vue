@@ -34,9 +34,7 @@ export default {
       rules: {
         // 校验谁，写谁的
         username: [
-          { required: true, message: '请输入用户名', trigger: 'blur' },
-          { min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur' }
-        ],
+          { required: true, message: '请输入用户名', trigger: 'blur' }],
         password: [
           { required: true, message: '请输入密码', trigger: 'blur' }
         ]
@@ -60,6 +58,9 @@ export default {
               localStorage.setItem('mytoken', res.data.token)
               // 2 跳转页面
               this.$router.push({name: 'home'})
+              // 3 把当前的用户名字存放在state当中，用于后面登录成功动态渲染
+              //  如果想以异步的方式调用函数，那么就应该使用dispatch，它是触发actions中的方法
+              this.$store.dispatch('setUserNameAction', res.data.username)
               // 发送请求 get 请求是对象的模式传值{params:{id:1}}
               // getUserList({query: '', pagenum: 1, pagesize: 10}).then((res) => {
               //   console.log(res)

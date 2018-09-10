@@ -8,6 +8,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 // 引入css样式
 import './styles/index.scss'
+// 引入store 用来存取登录用户的用户信息
+import store from './store/store.js'
 
 Vue.use(ElementUI)
 Vue.config.productionTip = false
@@ -38,6 +40,7 @@ router.beforeEach((to, from, next) => {
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
