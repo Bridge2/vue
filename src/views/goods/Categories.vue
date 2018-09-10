@@ -31,7 +31,7 @@
   </el-form>
   <div slot="footer" class="dialog-footer">
     <el-button @click="adddialogFormVisible = false">取 消</el-button>
-    <el-button type="primary" @click="adddialogFormVisible = false">确 定</el-button>
+    <el-button type="primary" @click="addSubmit">确 定</el-button>
   </div>
 </el-dialog>
      </div>
@@ -40,7 +40,7 @@
 <script>
 /* 引入自定义组件 如果遇到特殊符号，则可以直接引用到vue的组件，后面可以用过components来获取到具体的组件的结构 */
 import TreeGrid from '@/components/TreeGrid/TreeGrid.vue'
-import { getAllcategories } from '@/api/index.js'
+import { getAllcategories, addCtegories } from '@/api/index.js'
 export default {
   /* 1 通过components来引入组件  2 在页面上渲染结构 */
   components: {
@@ -81,6 +81,11 @@ export default {
     }
   },
   methods: {
+    // 实现分类的添加
+    addSubmit () {
+      // 1 获取cat_pid和cat_level里面值都存取在selectedOptions数组里面，当你改变下拉框的时候会得到你要的cat_pai的数组，可以根据selectedOptions数组的长度判断cat_level的层级
+      addCtegories()
+    },
     // 提交用户分类
     handleChange () {},
     // 添加用户

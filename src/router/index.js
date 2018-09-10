@@ -10,6 +10,8 @@ import Role from '@/views/right/Role.vue'
 import Categories from '@/views/goods/Categories.vue'
 import Goods from '@/views/goods/Goods.vue'
 import Params from '@/views/goods/Params.vue'
+import GoodsList from '@/views/goods/GoodsList.vue'
+import GoodsAdd from '@/views/goods/GoodsAdd.vue'
 // 引入静态资源文件
 // import styles  from '@/'
 Vue.use(Router)
@@ -54,7 +56,18 @@ export default new Router({
         {
           path: 'goods',
           name: 'goods',
-          component: Goods
+          component: Goods,
+          // 当他访问goods的重定向到goodlist路由 如果重定向用到path，则需要加上goods/list才能跳转，不然会想到跟目录跳转(home)，不会在goods下跳转
+          redirect: {name: 'list'},
+          // goods里面的嵌套两个路由
+          children: [
+            { path: 'list',
+              name: 'list',
+              component: GoodsList},
+            { path: 'add',
+              name: 'add',
+              component: GoodsAdd}
+          ]
         },
         {
           path: 'categories',

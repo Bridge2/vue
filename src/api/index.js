@@ -113,3 +113,10 @@ export const getAllcategories = (type) => {
     return res.data
   })
 }
+// 15 实现商品分类的添加
+export const addCtegories = (pa) => {
+  // 返回axios请求和结果
+  return axios.get('categories', pa).then((res) => {
+    return res.data
+  })
+}

@@ -11,7 +11,7 @@
                             <span>{{item.authName}}</span>
                         </template>
                         <!-- 跳转的路径在part里面 路由的路径要根据这里的路径修改-->
-                        <el-menu-item :index="subitem.path" v-for="(subitem) in item.children" :key="subitem.id">
+                        <el-menu-item :index="'/'+subitem.path" v-for="(subitem) in item.children" :key="subitem.id">
                             <i class="el-icon-menu"></i>
                             <span>{{subitem.authName}}</span>
                         </el-menu-item>
