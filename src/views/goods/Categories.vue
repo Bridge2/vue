@@ -84,7 +84,28 @@ export default {
     // 实现分类的添加
     addSubmit () {
       // 1 获取cat_pid和cat_level里面值都存取在selectedOptions数组里面，当你改变下拉框的时候会得到你要的cat_pai的数组，可以根据selectedOptions数组的长度判断cat_level的层级
-      addCtegories()
+    // 2 判断selectedOptions数组的长度，当它为0是label为0
+      if (this.selectedOptions.length === 0) {
+        this.addform.cat_level = 0
+        this.addform.cat_pid = 0
+        console.log(this.addform.cat_pid)
+      } else if (this.selectedOptions.length === 1) {
+        this.addform.cat_level = 1
+        this.addform.cat_pid = this.selectedOptions[0]
+      } else if (this.selectedOptions.length === 2) {
+        this.addform.cat_level = 2
+        this.addform.cat_pid = this.selectedOptions[1]
+      }
+      addCtegories(this.addform).then((res) => {
+        if (res.meta.status === 201) {
+          this.$message({
+            type: 'success',
+            message: res.meta.msg
+          })
+          this.adddialogFormVisible = false
+          this.initList()
+        }
+      })
     },
     // 提交用户分类
     handleChange () {},
@@ -101,6 +122,11 @@ export default {
     },
     editCategory (cid) {
       console.log(cid)
+    },
+    initList () {
+      getAllcategories(3).then((res) => {
+        this.dataSource = res.data
+      })
     }
   },
   /* 打开页面就渲染数据 */

@@ -10,7 +10,24 @@ import 'element-ui/lib/theme-chalk/index.css'
 import './styles/index.scss'
 // 引入store 用来存取登录用户的用户信息
 import store from './store/store.js'
+// 引入高德地图插件
+// 引入vue-amap
+import VueAMap from 'vue-amap'
+// 引入echarts
+import ECharts from 'vue-echarts'
+Vue.use(VueAMap)
 
+// 初始化vue-amap
+VueAMap.initAMapApiLoader({
+  // 高德的key
+  key: '6a204f2b675f32f8849ec4b6b7c21e5c',
+  // 插件集合
+  plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 高德 sdk 版本，默认为 1.4.4
+  v: '1.4.4'
+})
+// register component to use
+Vue.component('chart', ECharts)
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
